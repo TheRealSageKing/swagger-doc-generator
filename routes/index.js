@@ -25,27 +25,17 @@ router.post("/generate", (req, res, next) => {
 		const respOk = generateSwaggerSchema(ok);
 		const respErr = generateSwaggerSchema(err);
 		const reqBody = generateSwaggerSchema(rbody);
-		const reqParams = generateSwaggerSchema(params);
+		const reqParams = generateSwaggerParamSchema(parameters);
 
 		const swaggerDefinition = {
-			[`${endpoint}`]: {
+			[`${path}`]: {
 				summary: summary,
 				description: "Login Path",
 				[`${method}`]: {
 					summary: "",
 					tags: [`${tag}`],
 					description: "",
-					parameters: [
-						{
-							in: "path",
-							name: "userId",
-							schema: {
-								type: "integer",
-							},
-							required: true,
-							description: "Numeric ID of the user to get",
-						},
-					],
+					parameters: reqParams,
 					requestBody: {
 						required: true,
 						content: {
@@ -117,6 +107,29 @@ function generateSwaggerSchema(responseObject) {
 	});
 
 	return properties;
+}
+
+function generateSwaggerParamSchema(apiResponse) {
+	const schema = [];
+
+	// Iterate through each property in the API response object
+	for (const key in apiResponse) {
+		if (apiResponse.hasOwnProperty(key)) {
+			const property = {
+				in: "path", // Assuming the parameter is in the path
+				name: key,
+				schema: {
+					type: typeof apiResponse[key], // Get the data type of the property
+				},
+				required: true,
+				description: "",
+			};
+
+			schema.push(property);
+		}
+	}
+
+	return schema;
 }
 
 module.exports = router;
