@@ -37,10 +37,8 @@ Swagger Doc Generator is a Node.js Express application that automatically genera
 
 ## Documentation
 
-[Documentation](https://linktodocumentation)
-
-https://github.com/TheRealSageKing/swagger-generator/blob/main/docs/preview-2.png
-https://github.com/TheRealSageKing/swagger-generator/blob/main/docs/preview-2.png
+![Alt text](https://github.com/TheRealSageKing/swagger-generator/blob/main/docs/preview.png)
+![Alt text](https://github.com/TheRealSageKing/swagger-generator/blob/main/docs/preview-2.png)
 
 ## Contributing
 
