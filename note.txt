@@ -1,0 +1,190 @@
+{
+		"/auth/login": {
+			summary: "Login",
+			description: "Login Path",
+			post: {
+				summary: "",
+				tags: ["Authentication"],
+				description: "",
+				requestBody: {
+					required: true,
+					content: {
+						"application/json": {
+							schema: {
+								type: object,
+								properties: {
+									username: {
+										type: "string",
+									},
+									password: {
+										type: "string",
+									},
+								},
+							},
+						},
+					},
+				},
+				responses: {
+					"201": {
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									properties: {
+										success: {
+											type: "boolean",
+											example: true,
+										},
+										message: {
+											type: "string",
+											example: "Authentication successful",
+										},
+										data: {
+											type: "object",
+											example: {
+												accessToken: {
+													token: "eyJhbGciOiJIUzI1NiI...Kjo",
+													expiresIn: 3600,
+												},
+												refreshToken: "eyJhbGciOiJ...cE",
+												profile: {
+													firstname: "Mary",
+													lastname: "Poppins",
+													email: "mpoppins@gmail.com",
+													username: "marypoppins",
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"400": {
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									properties: {
+										success: {
+											type: "boolean",
+											example: false,
+										},
+										error: {
+											type: "string",
+											example: "Invalid username or password",
+										},
+										timestamp: {
+											type: "string",
+											example: "2024-03-31T23:00:35.284Z",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"/account": {
+			summary: "Creates a new user account",
+			description: "Login Path",
+			post: {
+				summary: "",
+				tags: ["Authentication"],
+				description: "",
+				requestBody: {
+					required: true,
+					content: {
+						"application/json": {
+							schema: {
+								type: "object",
+								properties: {
+									firstName: {
+										type: "string",
+										example: "Janet",
+									},
+									lastName: {
+										type: "string",
+										example: "V. Pim",
+									},
+									email: {
+										type: "string",
+										example: "jvpim@gmail.com",
+									},
+									password: {
+										type: "string",
+										example: "password",
+									},
+									username: {
+										type: "string",
+										example: "jvpim",
+									},
+								},
+							},
+						},
+					},
+				},
+				responses: {
+					"201": {
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									properties: {
+										success: {
+											type: "boolean",
+											example: true,
+										},
+										data: {
+											type: "object",
+											example: {
+												firstName: "Janet",
+												lastName: "V. Pim",
+												email: "jvpim@gmail.com",
+												username: "jvpim",
+												activatedAt: null,
+												activationCode: null,
+												gravatar: null,
+												avatar: null,
+												jobTitle: null,
+												phone: null,
+												employeeNo: null,
+												resetPasswordCode: null,
+												lastLoginAt: null,
+												id: 4,
+												activated: 0,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"400": {
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									properties: {
+										success: {
+											type: "boolean",
+											example: false,
+										},
+										error: {
+											type: "string",
+											example: "Email already in use",
+										},
+										timestamp: {
+											type: "string",
+											example: "2024-04-01T16:10:06.278Z",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	},
