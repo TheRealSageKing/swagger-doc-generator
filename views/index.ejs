@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= title %></title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="/stylesheets/style.css" />
+	</head>
+	<body>
+		<div class="app">
+			<div class="form">
+				<h1 class="lobster-bold">Swagger Generator</h1>
+				<p class="instruction">It generates a swagger json documentation which you can use to document your application. All you need are the requests, response and paths just as you use in making api calls and you are good to go</p>
+
+				<form method="post" id="form">
+					<div class="field">
+						<input type="text" name="path" placeholder="path e.g /accounts" />
+					</div>
+					<div class="row">
+						<div class="field">
+							<select name="method" id="">
+								<option value="" seleted disabled>- select -</option>
+								<option value="GET">GET</option>
+								<option value="POST">POST</option>
+								<option value="PUT">PUT</option>
+								<option value="PATCH">PATCH</option>
+								<option value="DELETE">DELETE</option>
+							</select>
+						</div>
+						<div class="field">
+							<input type="text" name="tag" placeholder="Tag or Group name e.g Authentication" />
+						</div>
+					</div>
+					<div class="field">
+						<input type="text" placeholder="summary" name="summary e.g a simple accounts endpoint" />
+					</div>
+					<div class="row">
+						<div class="field">
+							<textarea name="request_params" placeholder="request parameters (optional) e.g {'userId':1, name:'Jon Dee'}"></textarea>
+						</div>
+						<div class="field">
+							<textarea name="request_body" placeholder="request body or payload (optional)"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="field">
+							<textarea name="response_ok" placeholder="response ok"></textarea>
+						</div>
+						<div class="field">
+							<textarea name="response_error" placeholder="response error"></textarea>
+						</div>
+					</div>
+					<button type="submit">Generate</button>
+				</form>
+			</div>
+			<div class="code">
+				<button class="btn-sm" onclick="copyToClipboard()" id="btnCopy">copy</button>
+				<pre>
+          <code class="language-json" id="codePreview"></code>
+          <textarea id="clipboard" cols="30" rows="10"></textarea>
+        </pre>
+			</div>
+		</div>
+	</body>
+	<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/default.min.css" />
+	<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+
+	<!-- and it's easy to individually load additional languages -->
+	<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/languages/go.min.js"></script>
+
+	<script>
+		hljs.highlightAll();
+	</script>
+	<script>
+		const form = document.getElementById("form");
+		const response = document.getElementById("codePreview");
+
+		form.addEventListener("submit", (e) => {
+			e.preventDefault();
+
+			const data = JSON.stringify({
+				error: form.response_error.value,
+				success: form.response_ok.value,
+				body: form.request_body.value,
+				params: form.request_params.value,
+				path: form.path.value,
+				summary: form.summary.value,
+			});
+
+			fetch("/generate", { method: "post", body: data, headers: { "Content-Type": "application/json" } })
+				.then((res) => {
+					return res.json();
+				})
+				.then((result) => {
+					document.getElementById("btnCopy").classList.add("show");
+					response.innerText = JSON.stringify(result.response, null, 2);
+					document.getElementById("clipboard").value = JSON.stringify(result.response, null, 2);
+				});
+		});
+
+		function copyToClipboard() {
+			// Get the text field
+			var copyText = document.getElementById("clipboard");
+
+			// Select the text field
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); // For mobile devices
+
+			// Copy the text inside the text field
+			navigator.clipboard.writeText(copyText.value);
+
+			// Alert the copied text
+			alert("Copied to clipboard ");
+		}
+	</script>
+</html>
